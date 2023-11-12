@@ -17,10 +17,7 @@
 		exit();
 	} 
 	
-	$insertNewUserQueryResult = mysqli_query($mysql, "INSERT INTO `users` 
-													(`login`, `password`, `name`, `lastname`, `age`) 
-													VALUES ('$login', '$passw', '$name', '$lastname', '$age');");
-													
+	$insertNewUserQueryResult = mysqli_query($mysql, "INSERT INTO `users` (`login`, `password`, `name`, `lastname`, `age`) VALUES ('$login', '$passw', '$name', '$lastname', '$age');");
 	if (!$insertNewUserQueryResult) {
 		print("Ошибка на сервере. Попробуйте зарегистрироваться ещё раз позже!");
 		exit();
