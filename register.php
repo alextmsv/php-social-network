@@ -3,6 +3,22 @@
 	<title>Регистрация</title>
 </head>
 <body>
+	<?php
+		if (isset($_GET["error"])) {
+			$errorType = $_GET["error"];
+		
+	?>
+	<div style="padding: 5px; border: 1px solid; width: 20%; color: red;">
+		<?php
+			if ($errorType == "NoDataInputed") print("Данные не предоставлены");
+			if ($errorType == "UserAlreadyExists") print("Пользователь с таким же именем (".$_GET["login"].") уже существует ");
+			if ($errorType == "SQL_Error") print("Ошибка на стороне сервера. Попробуйте зарегистрироваться позже");
+			
+		?>
+	</div>
+	<?php
+		}
+	?>
 	<form action="acts/register.php" method="post">
 		Логин: <br>
 		<input type="text" name="login" placeholder="Логин" required /> <br />

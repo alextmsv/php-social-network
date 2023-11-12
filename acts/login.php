@@ -3,7 +3,7 @@
 	$passw = trim($_POST["password"]);
 	
 	if (empty($login) || empty($passw)) {
-		header("Location: ../login.php");
+		header("Location: ../login.php?error=NoData");
 		exit();
 	}
 	
@@ -12,7 +12,7 @@
 	$resultArray = mysqli_fetch_array($result);
 	
 	if ($resultArray == null) {
-		print("Неверный логин или пароль!");
+		header("Location: ../login.php?error=NoSuchUser");
 		exit();
 	}
 	
@@ -22,7 +22,7 @@
 		$_SESSION["login"] = $login;
 		header("Location: ../index.php");
 	} else {
-		print("Неверный логин или пароль!");
+		header("Location: ../login.php?error=BadLogin");
 	}
 	
 	mysqli_close($mysql);

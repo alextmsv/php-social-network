@@ -10,6 +10,20 @@
 		<title>Моя соц сеть</title>
 	</head>
 	<body>
+	<?php
+		if (isset($_GET["error"])) {
+			$errorType = $_GET["error"];
+	?>
+		<div style="padding: 5px; border: 1px solid; width: 20%; color: red;">
+	<?php
+		if ($errorType == "BadLogin") print("Неверный логин/пароль!");
+		if ($errorType == "NoData") print("Данные не предоставлены!");
+		if ($errorType == "NoSuchUser") print("Такой пользователь не существует. <a href='register.php'>Зарегистрировать?</a>");
+	?>
+		</div>
+	<?php
+		}
+	?>
 		Авторизация: <br>
 		<form action="acts/login.php" method="post">
 			Логин: <br>
