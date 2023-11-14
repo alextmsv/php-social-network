@@ -18,6 +18,7 @@
 	
 	if ($resultArray["password"] == $passw) {
 		session_start();
+		$_SESSION["name_lastname"] = $resultArray["name"]." ".$resultArray["lastname"];
 		$_SESSION["user_id"] = $resultArray["id"];
 		$_SESSION["login"] = $login;
 		header("Location: ../index.php");

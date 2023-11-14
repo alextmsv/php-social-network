@@ -28,6 +28,12 @@
 		<title><?php print("$lastname $name - Моя соц сеть");?></title>
 	</head>
 	<body>
+		<span style="font-size: 16px; text-align: right; display: block">
+			<a href="profile.php?id=<?php print($_SESSION["user_id"]	);?>" style="color: green">
+					<b title="Перейти на ваш профиль"><?php print($_SESSION["name_lastname"]);?></b>
+			</a>
+		</span>
+		<hr>
 		Имя: <?php print("$name");?><br />
 		Фамилия: <?php print("$lastname");?><br />
 		Возраст: <?php print("$age");?><br />
