@@ -35,8 +35,10 @@
 		<?php
 			if ($hasUserSession)
 				print("<br /><a href='acts/logout.php'>Выход</a>");
-			else
+			else {
 				print("<br /><a href='login.php'>Войти</a>");
+				exit();
+			}
 		?>
 		<hr/>
 		<form action="acts/post.php" method="post">
@@ -46,7 +48,7 @@
 		</form>
 		<hr/>
 			<?php
-				$commentsResult = mysqli_query($mysql, "SELECT * FROM `userposts`");
+				$commentsResult = mysqli_query($mysql, "SELECT * FROM `userposts` WHERE `postReceiver`=$userId");
 				while (($commentsResultArray = mysqli_fetch_array($commentsResult)) != null) 
 				{
 					$postID=$commentsResultArray["postID"];
@@ -58,7 +60,7 @@
 					$posterArray = mysqli_fetch_array($posterQuery);
 					$posterName = $posterArray["name"]." ". $posterArray["lastname"];
 			?>
-					<a href="profile.php?id=<?php print($postAuthor);?>" style="color: green">
+					<a href="profile.php?id=<?php print($postAuthor	);?>" style="color: green">
 						<b><?php print($posterName);?></b>
 					</a>
 					<br>
