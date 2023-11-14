@@ -40,10 +40,37 @@
 		?>
 		<hr/>
 		<form action="acts/post.php" method="post">
+			<input type="hidden" name="postReceiver" value="<?php print($userId);?>" />
 			<textarea name="post"></textarea><br>
 			<input type="submit" value="Опубликовать"/>
 		</form>
 		<hr/>
+			<?php
+				$commentsResult = mysqli_query($mysql, "SELECT * FROM `userposts`");
+				while (($commentsResultArray = mysqli_fetch_array($commentsResult)) != null) 
+				{
+					$postID=$commentsResultArray["postID"];
+					$postAuthor=$commentsResultArray["postAuthor"];
+					$postReceiver=$commentsResultArray["postReceiver"];
+					$postData=$commentsResultArray["postData"];
+					$postText=$commentsResultArray["postText"];
+					$posterQuery = mysqli_query($mysql, "SELECT * FROM `users` WHERE `id` = '$postAuthor'");
+					$posterArray = mysqli_fetch_array($posterQuery);
+					$posterName = $posterArray["name"]." ". $posterArray["lastname"];
+			?>
+					<a href="profile.php?id=<?php print($postAuthor);?>" style="color: green">
+						<b><?php print($posterName);?></b>
+					</a>
+					<br>
+					<span style="color: gray; font-size: 12px;"><?php print($postData);?></span>
+					<br>
+					<span style="font-size: 16px; padding: 15px">
+						<?php print($postText);?>
+					</span>
+					<hr>
+			<?php
+				}
+			?>
 	</body>
 	
 </html>
