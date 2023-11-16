@@ -1,4 +1,6 @@
 <?php
+	include("helpers/HTMLRender.php");
+	
 	session_start();
 	/*bool */$hasUserSession = (!empty($_SESSION["user_id"]));
 	if (empty($_GET["id"])) {
@@ -29,7 +31,7 @@
 	</head>
 	<body>
 		<span style="font-size: 16px; text-align: right; display: block">
-			<a href="profile.php?id=<?php print($_SESSION["user_id"]	);?>" style="color: green">
+			<a href="profile.php?id=<?php print($_SESSION["user_id"]	);?>" style="color: blue">
 					<b title="Перейти на ваш профиль"><?php print($_SESSION["name_lastname"]);?></b>
 			</a>
 		</span>
@@ -47,21 +49,25 @@
 			}
 		?>
 		<hr/>
-		<form action="acts/post.php" method="post">
+		<form action="acts/post.php" method="post" enctype="multipart/form-data">
+			<input type="file" id="fileInput" name="fileInput">
 			<input type="hidden" name="postReceiver" value="<?php print($userId);?>" />
-			<textarea name="post"></textarea><br>
+			<textarea name="post" required></textarea><br>
 			<input type="submit" value="Опубликовать"/>
 		</form>
 		<hr/>
 			<?php
 				$commentsResult = mysqli_query($mysql, "SELECT * FROM `userposts` WHERE `postReceiver`=$userId");
-				while (($commentsResultArray = mysqli_fetch_array($commentsResult)) != null) 
+				
+				while (($commentsResultArray = mysqli_fetch_array($commentsResult))  != null ) 
 				{
 					$postID=$commentsResultArray["postID"];
+					$documentsResult = mysqli_query($mysql, "SELECT * FROM `userattachments` WHERE `postId`  = '$postID' ");
+					$documentResultArray = mysqli_fetch_array($documentsResult);
 					$postAuthor=$commentsResultArray["postAuthor"];
 					$postReceiver=$commentsResultArray["postReceiver"];
 					$postData=$commentsResultArray["postData"];
-					$postText=$commentsResultArray["postText"];
+					$postText=$commentsResultArray["postText"];	
 					$posterQuery = mysqli_query($mysql, "SELECT * FROM `users` WHERE `id` = '$postAuthor'");
 					$posterArray = mysqli_fetch_array($posterQuery);
 					$posterName = $posterArray["name"]." ". $posterArray["lastname"];
@@ -73,7 +79,13 @@
 					<span style="color: gray; font-size: 12px;"><?php print($postData);?></span>
 					<br>
 					<span style="font-size: 16px; padding: 15px">
-						<?php print($postText);?>
+						<?php 
+						print(htmlspecialchars($postText));
+						print("<br>");
+						if($documentResultArray != null) {
+							$htmlRenderer->doRender($documentResultArray["documentPath"]);
+						}
+						?>
 					</span>
 					<hr>
 			<?php
