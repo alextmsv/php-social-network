@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Ноя 14 2023 г., 11:57
+-- Время создания: Ноя 16 2023 г., 09:53
 -- Версия сервера: 10.4.28-MariaDB
 -- Версия PHP: 8.2.4
 
@@ -24,6 +24,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `userattachments`
+--
+
+CREATE TABLE `userattachments` (
+  `documentPath` text NOT NULL COMMENT 'Путь до документа на сервере',
+  `documentOwnerID` int(10) NOT NULL COMMENT 'Айди владельца документа',
+  `documentID` int(32) NOT NULL COMMENT 'Айди документа',
+  `postId` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `userposts`
 --
 
@@ -40,10 +53,7 @@ CREATE TABLE `userposts` (
 --
 
 INSERT INTO `userposts` (`postID`, `postAuthor`, `postReceiver`, `postData`, `postText`) VALUES
-(19, 1, 2, '14.11.2023 17:55:11', 'ДАРОВА БЛЯ\r\n'),
-(20, 1, 1, '14.11.2023 17:55:22', 'ура'),
-(21, 1, 1, '14.11.2023 17:56:04', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis auctor. Sit amet volutpat consequat mauris nunc. Sed odio morbi quis commodo. Morbi tristique senectus et netus et malesuada fames. Consequat id porta nibh venenatis cras sed felis. Purus in mollis nunc sed id semper risus. Mattis molestie a iaculis at erat pellentesque. Gravida neque convallis a cras semper auctor neque. Orci a scelerisque purus semper eget. Velit ut tortor pretium viverra suspendisse. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim.'),
-(22, 1, 1, '14.11.2023 17:56:14', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis auctor. Sit amet volutpat consequat mauris nunc. Sed odio morbi quis commodo. Morbi tristique senectus et netus et malesuada fames. Consequat id porta nibh venenatis cras sed felis. Purus in mollis nunc sed id semper risus. Mattis molestie a iaculis at erat pellentesque. Gravida neque convallis a cras semper auctor neque. Orci a scelerisque purus semper eget. Velit ut tortor pretium viverra suspendisse. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis auctor. Sit amet volutpat consequat mauris nunc. Sed odio morbi quis commodo. Morbi tristique senectus et netus et malesuada fames. Consequat id porta nibh venenatis cras sed felis. Purus in mollis nunc sed id semper risus. Mattis molestie a iaculis at erat pellentesque. Gravida neque convallis a cras semper auctor neque. Orci a scelerisque purus semper eget. Velit ut tortor pretium viverra suspendisse. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis auctor. Sit amet volutpat consequat mauris nunc. Sed odio morbi quis commodo. Morbi tristique senectus et netus et malesuada fames. Consequat id porta nibh venenatis cras sed felis. Purus in mollis nunc sed id semper risus. Mattis molestie a iaculis at erat pellentesque. Gravida neque convallis a cras semper auctor neque. Orci a scelerisque purus semper eget. Velit ut tortor pretium viverra suspendisse. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis auctor. Sit amet volutpat consequat mauris nunc. Sed odio morbi quis commodo. Morbi tristique senectus et netus et malesuada fames. Consequat id porta nibh venenatis cras sed felis. Purus in mollis nunc sed id semper risus. Mattis molestie a iaculis at erat pellentesque. Gravida neque convallis a cras semper auctor neque. Orci a scelerisque purus semper eget. Velit ut tortor pretium viverra suspendisse. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Bibendum est ultricies integer quis auctor. Sit amet volutpat consequat mauris nunc. Sed odio morbi quis commodo. Morbi tristique senectus et netus et malesuada fames. Consequat id porta nibh venenatis cras sed felis. Purus in mollis nunc sed id semper risus. Mattis molestie a iaculis at erat pellentesque. Gravida neque convallis a cras semper auctor neque. Orci a scelerisque purus semper eget. Velit ut tortor pretium viverra suspendisse. Ullamcorper eget nulla facilisi etiam dignissim diam quis enim.');
+(51, 1, 2, '16.11.2023 15:47:15', '');
 
 -- --------------------------------------------------------
 
@@ -74,6 +84,12 @@ INSERT INTO `users` (`id`, `login`, `password`, `name`, `lastname`, `age`) VALUE
 --
 
 --
+-- Индексы таблицы `userattachments`
+--
+ALTER TABLE `userattachments`
+  ADD PRIMARY KEY (`documentID`);
+
+--
 -- Индексы таблицы `userposts`
 --
 ALTER TABLE `userposts`
@@ -90,10 +106,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT для таблицы `userattachments`
+--
+ALTER TABLE `userattachments`
+  MODIFY `documentID` int(32) NOT NULL AUTO_INCREMENT COMMENT 'Айди документа', AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT для таблицы `userposts`
 --
 ALTER TABLE `userposts`
-  MODIFY `postID` int(3) NOT NULL AUTO_INCREMENT COMMENT 'Айди поста', AUTO_INCREMENT=23;
+  MODIFY `postID` int(3) NOT NULL AUTO_INCREMENT COMMENT 'Айди поста', AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
