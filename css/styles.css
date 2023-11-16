@@ -1,0 +1,18 @@
+.logout {
+	color: red;
+	text-decoration: blink;	
+    display: flex;
+	align-items: s;
+}
+.profileInfo {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size: 20px;
+	letter-spacing: 3px;
+	word-spacing: 1px;
+	color: #000000;
+	font-weight: 700;
+	text-decoration: none solid rgb(68, 68, 68);
+	font-style: normal;
+	font-variant: normal;
+	text-transform: none;
+}

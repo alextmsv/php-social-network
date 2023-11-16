@@ -25,24 +25,30 @@
 	$lastname = $resultArray["lastname"];
 	$age = $resultArray["age"];
 ?>
-<html>
+<html>	
 	<head>
+		<link rel="stylesheet" href="css/styles.css" />
 		<title><?php print("$lastname $name - Моя соц сеть");?></title>
 	</head>
 	<body>
-		<span style="font-size: 16px; text-align: right; display: block">
-			<a href="profile.php?id=<?php print($_SESSION["user_id"]	);?>" style="color: blue">
-					<b title="Перейти на ваш профиль"><?php print($_SESSION["name_lastname"]);?></b>
-			</a>
-		</span>
-		<hr>
-		Имя: <?php print("$name");?><br />
-		Фамилия: <?php print("$lastname");?><br />
+		<?php if($hasUserSession) {?>
+			<span style="font-size: 16px; text-align: right; display: block">
+				<button onclick="javascript:document.location.href='editProfile.php'">Изменить вашу страницу</button>
+				<a href="profile.php?id=<?php print($_SESSION["user_id"]	);?>" style="color: blue">
+						<b title="Перейти на ваш профиль"><?php print($_SESSION["name_lastname"]);?></b>
+				</a>
+			</span>
+			<hr>	
+		<?php 
+		}
+		?>
+		<div class='profileInfo'>
+			<?php print("$name $lastname");?><br />
+		</div>
 		Возраст: <?php print("$age");?><br />
-		
 		<?php
 			if ($hasUserSession)
-				print("<br /><a href='acts/logout.php'>Выход</a>");
+				print("<br /><a href='acts/logout.php' class='logout'>Выход</a>");
 			else {
 				print("<br /><a href='login.php'>Войти</a>");
 				exit();
@@ -50,9 +56,9 @@
 		?>
 		<hr/>
 		<form action="acts/post.php" method="post" enctype="multipart/form-data">
+			<input type="hidden" name="postReceiver" value="<?php print($userId);?>" /> 
+			<textarea cols="50" rows="3" name="post" required></textarea><br>
 			<input type="file" id="fileInput" name="fileInput">
-			<input type="hidden" name="postReceiver" value="<?php print($userId);?>" />
-			<textarea name="post" required></textarea><br>
 			<input type="submit" value="Опубликовать"/>
 		</form>
 		<hr/>
