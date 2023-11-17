@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Ноя 16 2023 г., 09:53
+-- Время создания: Ноя 17 2023 г., 15:00
 -- Версия сервера: 10.4.28-MariaDB
 -- Версия PHP: 8.2.4
 
@@ -34,6 +34,13 @@ CREATE TABLE `userattachments` (
   `postId` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Дамп данных таблицы `userattachments`
+--
+
+INSERT INTO `userattachments` (`documentPath`, `documentOwnerID`, `documentID`, `postId`) VALUES
+('documentBase/1.mp3', 1, 15, 52);
+
 -- --------------------------------------------------------
 
 --
@@ -53,7 +60,13 @@ CREATE TABLE `userposts` (
 --
 
 INSERT INTO `userposts` (`postID`, `postAuthor`, `postReceiver`, `postData`, `postText`) VALUES
-(51, 1, 2, '16.11.2023 15:47:15', '');
+(51, 1, 2, '16.11.2023 15:47:15', ''),
+(52, 1, 1, '16.11.2023 17:19:18', 'крутая песня слушать всем '),
+(53, 1, 2, '16.11.2023 17:19:53', 'слыш зайди на стену мою я музончик выложил'),
+(54, 1, 3, '16.11.2023 17:20:02', 'тебя тоже касается'),
+(55, 2, 2, '16.11.2023 17:21:41', 'ща послушаю'),
+(56, 2, 1, '16.11.2023 17:21:48', 'вау нихуя себе!!!!!!!!'),
+(57, 1, 1, '16.11.2023 17:59:37', 'пост');
 
 -- --------------------------------------------------------
 
@@ -67,17 +80,19 @@ CREATE TABLE `users` (
   `password` varchar(128) NOT NULL COMMENT 'Пароль',
   `name` varchar(32) NOT NULL COMMENT 'Имя пользователя',
   `lastname` varchar(32) NOT NULL COMMENT 'Фамилия пользователя',
-  `age` int(3) NOT NULL COMMENT 'Возраст пользователя'
+  `age` int(3) NOT NULL COMMENT 'Возраст пользователя',
+  `pDescription` text NOT NULL COMMENT 'Описание к профилю'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Таблица с пользователями';
 
 --
 -- Дамп данных таблицы `users`
 --
 
-INSERT INTO `users` (`id`, `login`, `password`, `name`, `lastname`, `age`) VALUES
-(1, 'alextmsv', 'admin1', 'Алексей', 'Тумасов', 16),
-(2, 'tmsvruslan', 'tmsvruslan', 'Руслан', 'Тумасов', 29),
-(3, 'alextmsv1', 'admin2', 'Алексей', 'Тумасик', 16);
+INSERT INTO `users` (`id`, `login`, `password`, `name`, `lastname`, `age`, `pDescription`) VALUES
+(1, 'alextmsv', 'admin', 'Алексей', 'Тумасов', 16, ''),
+(2, 'tmsvruslan', 'tmsvruslan', 'Руслан', 'Тумасов', 29, 'DSBM, XASTHUR FOR3V3R'),
+(3, 'alextmsv1', 'admin2', 'Алексей', 'Тумасик', 16, 'Я Тумасик, изгой этот соц-сети('),
+(5, 'dsadsa', 'dsadsa', 'asdsad', 'asdsad', 12, '');
 
 --
 -- Индексы сохранённых таблиц
@@ -109,19 +124,19 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `userattachments`
 --
 ALTER TABLE `userattachments`
-  MODIFY `documentID` int(32) NOT NULL AUTO_INCREMENT COMMENT 'Айди документа', AUTO_INCREMENT=15;
+  MODIFY `documentID` int(32) NOT NULL AUTO_INCREMENT COMMENT 'Айди документа', AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `userposts`
 --
 ALTER TABLE `userposts`
-  MODIFY `postID` int(3) NOT NULL AUTO_INCREMENT COMMENT 'Айди поста', AUTO_INCREMENT=52;
+  MODIFY `postID` int(3) NOT NULL AUTO_INCREMENT COMMENT 'Айди поста', AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT для таблицы `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'id записи', AUTO_INCREMENT=4;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'id записи', AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
