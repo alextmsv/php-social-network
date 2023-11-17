@@ -30,7 +30,7 @@
 			<input type="text" name="login" placeholder="Логин" value= "alextmsv"required /><br />
 			
 			Пароль: <br>
-			<input type="password" name="password" placeholder="Пароль" value= "admin1" required /><br />
+			<input type="password" name="password" placeholder="Пароль" value= "admin" required /><br />
 			
 			<input type="submit" value="Авторизоваться" />
 		</form>
