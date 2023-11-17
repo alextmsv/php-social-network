@@ -26,26 +26,36 @@
 ?>
 		<?="<a class='profileInfo'>$name $lastname</a>";?>		
 		<?php 
-			print(($_SESSION["user_id"] == $userId) ?  "(<a href='editProfile.php' class='profileDescription' title='Изменить описание вашей страницы?'>$description</a>)" : "<a class='profileDescription'>$description</a>");
-			print("<br>");
+			if($hasUserSession) {
+				print(($_SESSION["user_id"] == $userId) ?  "<a href='editProfile.php' class='profileDescription' title='Изменить описание вашей страницы?'>$description</a>" : "<a class='profileDescription'>$description</a>");
+				print("<br>");
+			} else print("<a class='profileDescription'>$description</a><br>");
 		?>
 		Возраст: <?=$age?><br />
+		<hr/>
 		<?php
 			if ($hasUserSession)
-				print("<br /><a href='acts/logout.php' class='logout'>Выход</a>");
+				print("<a href='acts/logout.php' class='logout'>Выход</a><br>");
 			else {
-				print("<br /><a href='login.php'>Войти</a>");
-				exit();
+				print("<a href='index.php'>Войти</a><br>");
 			}
 		?>
-		<hr/>
-		<form action="acts/post.php" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="postReceiver" value="<?$userId;?>" /> 
-			<textarea cols="50" rows="3" name="post" required></textarea><br>
-			<input type="file" id="fileInput" name="fileInput">
-			<input type="submit" value="Опубликовать"/>
-		</form>
-		<hr/>
+		<br>
+
+		<?php 
+			if($hasUserSession) {
+		?>
+			<form action="acts/post.php" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="postReceiver" value="<?=$userId;?>" /> 
+				<textarea cols="50" rows="3" name="post" required></textarea><br>
+				<input type="file" id="fileInput" name="fileInput">
+				<input type="submit" value="Опубликовать"/>
+			</form>
+			<hr/>
+		<?php
+			}
+		?>
+		
 			<?php
 				$commentsResult = mysqli_query($mysql, "SELECT * FROM `userposts` WHERE `postReceiver`=$userId");
 				
