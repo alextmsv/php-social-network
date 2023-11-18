@@ -2,17 +2,17 @@
 	include("blocks/header.php");
 	
 	if (empty($_GET["id"])) {
-		if ($hasUserSession) {
-			header("Location: login.php");
+		if (!$hasUserSession) {
+			header("Location: index.php");
 			exit();
 		}
 		header("Location: profile.php?id=".$_SESSION["user_id"]);
 		exit();
 	}
-	
+	if(!is_numeric($_GET["id"])) die("Некорректный айди пользователя (содержит посторонние символы)");
 	$userId = $_GET["id"];
 	$mysql = mysqli_connect("localhost", "root", "", "social");
-	$result = mysqli_query($mysql, "SELECT * FROM `users` WHERE `id`=$userId;");
+	$result = mysqli_query($mysql, "SELECT * FROM `users` WHERE `id`=".htmlspecialchars($userId).";");
 	$resultArray = mysqli_fetch_array($result);
 	if ($resultArray == null) {
 		header("Location: errors/404.php");
@@ -32,26 +32,40 @@
 			} else print("<a class='profileDescription'>$description</a><br>");
 		?>
 		Возраст: <?=$age?><br />
-		<hr/>
+		<hr/>	 	
 		<?php
-			if ($hasUserSession)
-				print("<a href='acts/logout.php' class='logout'>Выход</a><br>");
-			else {
-				print("<a href='index.php'>Войти</a><br>");
-			}
-		?>
+			($hasUserSession) ? print('<span class="logout"><a href="acts/logout.php" style="color: red;">Выйти</a></span><hr>') :  print('<a href="login.php" class="login">Войти</a><hr>');	
+		?>	
+		
 		<br>
-
 		<?php 
 			if($hasUserSession) {
 		?>
-			<form action="acts/post.php" method="post" enctype="multipart/form-data">
-				<input type="hidden" name="postReceiver" value="<?=$userId;?>" /> 
-				<textarea cols="50" rows="3" name="post" required></textarea><br>
-				<input type="file" id="fileInput" name="fileInput">
-				<input type="submit" value="Опубликовать"/>
-			</form>
-			<hr/>
+			<?php if($_SESSION["user_id"] != $userId) {
+				$contactCheck = mysqli_fetch_array(mysqli_query($mysql, "SELECT * FROM `usercontacts` WHERE `contactID`='$userId' and `contacterID`='".$_SESSION["user_id"]."'"));
+				if ($contactCheck == null){ ?>
+				<form action="acts/addFriend.php" method="post" style="text-align: center; display:inline;">
+					<input type="hidden" name="newFriendID" value="<?=$userId;?>" /> 
+					<button>Добавить в друзья</button>
+				</form>
+				<?php 
+				} else {
+				?>
+				<form action="acts/removeFriend.php" method="post" style="text-align: center; display:inline;">
+					<input type="hidden" name="exFriendID" value="<?=$userId;?>" /> 
+					<button>Удалить из друзей</button>
+				</form>
+			<?php 
+				} 
+			}
+			?>
+				<form action="acts/post.php" method="post" enctype="multipart/form-data" style="text-align: center; display: block-inline;">
+					<input type="hidden" name="postReceiver" value="<?=$userId;?>" /> 
+					<textarea cols="50" rows="3" name="post" required></textarea><br>
+					<input type="file" id="fileInput" name="fileInput">
+					<input type="submit" value="Опубликовать"/>
+				</form>
+				<hr/>
 		<?php
 			}
 		?>
@@ -72,22 +86,24 @@
 					$posterArray = mysqli_fetch_array($posterQuery);
 					$posterName = $posterArray["name"]." ". $posterArray["lastname"];
 			?>
-					<a href="profile.php?id=<?php print($postAuthor	);?>" style="color: green">
-						<b><?=$posterName;?></b>
-					</a>
+					<div style="padding: 5px; border: 1px solid; width: 40%;">
+						<a href="profile.php?id=<?=$postAuthor;?>" style="<?=($postAuthor==$userId) ? 'color: blue;' : 'color: green'?>">
+							<b><?=$posterName;?></b>
+						</a>
+						<br>
+						<span style="color: gray; font-size: 12px;"><?=$postData;?></span>
+						<br>
+						<span style="font-size: 16px; padding: 15px">
+							<?php 
+							print(htmlspecialchars($postText));
+							print("<br>");
+							if($documentResultArray != null) {
+								$htmlRenderer->doRender($documentResultArray["documentPath"]);
+							}
+							?>
+						</span>
+					</div>
 					<br>
-					<span style="color: gray; font-size: 12px;"><?php print($postData);?></span>
-					<br>
-					<span style="font-size: 16px; padding: 15px">
-						<?php 
-						print(htmlspecialchars($postText));
-						print("<br>");
-						if($documentResultArray != null) {
-							$htmlRenderer->doRender($documentResultArray["documentPath"]);
-						}
-						?>
-					</span>
-					<hr>
 			<?php
 				}
 			include("blocks/bottom.php");

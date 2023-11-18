@@ -14,14 +14,14 @@
 		<div class='humanDesc'>
 			Расскажите о себе:
 			<br /> 
-			<textarea name="pDescription"><?=$description; ?></textarea> 
+			<textarea name="pDescription"><?php htmlspecialchars($description); ?></textarea> 
 		</div>
 		Изменить имя на: <br>
-		<input type="text" name="name" value="<?=$name;?>" maxlength="32" /> <br />
+		<input type="text" name="name" value="<?php htmlspecialchars(name);?>" maxlength="32" /> <br />
 		Изменить фамилию на: <br>
-		<input type="text" name="lastname" value="<?=$lastname;?>" maxlength="32" /> <br />
+		<input type="text" name="lastname" value="<?php htmlspecialchars($lastname);?>" maxlength="32" /> <br />
 		Изменить возраст на: <br>
-		<input type="number" name="age" value="<?=$age;?>" min="5" max="150" /> <br />
+		<input type="number" name="age" value="<?php htmlspecialchars(age);?>" min="5" max="150" /> <br />
 		<hr>
 		Ваш новый логин: <br>
 		<input type="text" name="newLogin" maxlength="32" /> <br />
