@@ -6,6 +6,7 @@
 ?>
 <html>	
 	<head>
+		<script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
 		<link rel="stylesheet" href="css/styles.css?v=<?=time();?>" />
 		<title><?=$pageTitle;?></title>
 	</head>

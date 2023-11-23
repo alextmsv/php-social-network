@@ -59,32 +59,61 @@
 				} 
 			}
 			?>
-				<form action="acts/post.php" method="post" enctype="multipart/form-data" style="text-align: center; display: block-inline;">
-					<input type="hidden" name="postReceiver" value="<?=$userId;?>" /> 
-					<textarea cols="50" rows="3" name="post" required></textarea><br>
+				<script type="text/javascript">
+					function renderHtmlPost(response) {
+						var oldPosts = $("#posts").html();
+						$("#posts").html(response + oldPosts);
+						$("#post").val("");
+					}
+					
+					$(document).ready(function() {
+						$("#newPostForm").submit(function(e) {
+							e.preventDefault();   
+							var formData = new FormData(this);
+							$.ajax({
+								method: "POST",
+								url: "acts/post.php",
+								cache: false,
+								contentType: false,
+								processData: false,
+								data: formData
+								/*{
+									"post": $("#post").val(),
+									"postReceiver": "<?=$userId;?>",
+								}*/
+							}).done(function(response) {
+								renderHtmlPost(response);
+							}).fail(function(failedResponse) {
+								alert(failedResponse);
+							});
+						});
+					});
+					function renderFriendRequest(response) {
+						
+					}
+				</script>
+				<form id="newPostForm" enctype="multipart/form-data" style="text-align: center; display: block-inline;"> <!-- enctype="multipart/form-data"-->
+					<input type="hidden" name="postReceiver" value="<?=$userId;?>" />
+					<textarea cols="50" rows="3" name="post" id="post" required></textarea><br>
 					<input type="file" id="fileInput" name="fileInput">
-					<input type="submit" value="Опубликовать"/>
+					<button>Опубликовать</button>
 				</form>
 				<hr/>
 		<?php
 			}
 		?>
-		
+			<div id="posts">
 			<?php
-				$commentsResult = mysqli_query($mysql, "SELECT * FROM `userposts` WHERE `postReceiver`=$userId");
-				
-				while (($commentsResultArray = mysqli_fetch_array($commentsResult))  != null ) 
+				$wallQuery = mysqli_query($mysql, "SELECT p.*, a.documentPath, u.name, u.lastname FROM `userposts` p LEFT JOIN `users` u ON p.postAuthor = u.id LEFT JOIN `userattachments` a ON p.postID = a.postId WHERE `postReceiver`='$userId' ORDER BY `postID` DESC;");				
+				while (($wallArray = mysqli_fetch_array($wallQuery))  != null ) 
 				{
-					$postID=$commentsResultArray["postID"];
-					$documentsResult = mysqli_query($mysql, "SELECT * FROM `userattachments` WHERE `postId`  = '$postID' ");
-					$documentResultArray = mysqli_fetch_array($documentsResult);
-					$postAuthor=$commentsResultArray["postAuthor"];
-					$postReceiver=$commentsResultArray["postReceiver"];
-					$postData=$commentsResultArray["postData"];
-					$postText=$commentsResultArray["postText"];	
-					$posterQuery = mysqli_query($mysql, "SELECT * FROM `users` WHERE `id` = '$postAuthor'");
-					$posterArray = mysqli_fetch_array($posterQuery);
-					$posterName = $posterArray["name"]." ". $posterArray["lastname"];
+					$postID=$wallArray["postID"];
+					$postAuthor=$wallArray["postAuthor"];
+					$postReceiver=$wallArray["postReceiver"];
+					$postData=$wallArray["postData"];
+					$postText=$wallArray["postText"];	
+					$posterName = $wallArray["name"]." ". $wallArray["lastname"];
+
 			?>
 					<div style="padding: 5px; border: 1px solid; width: 40%;">
 						<a href="profile.php?id=<?=$postAuthor;?>" style="<?=($postAuthor==$userId) ? 'color: blue;' : 'color: green'?>">
@@ -97,8 +126,8 @@
 							<?php 
 							print(htmlspecialchars($postText));
 							print("<br>");
-							if($documentResultArray != null) {
-								$htmlRenderer->doRender($documentResultArray["documentPath"]);
+							if($wallArray["documentPath"] != null) {
+								$htmlRenderer->doRender($wallArray["documentPath"]);
 							}
 							?>
 						</span>
@@ -106,6 +135,10 @@
 					<br>
 			<?php
 				}
+			?>
+			
+			</div>
+			<?php
 			include("blocks/bottom.php");
 			mysqli_close($mysql);
-?>
+			?>
